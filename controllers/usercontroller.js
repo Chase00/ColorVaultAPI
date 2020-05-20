@@ -6,7 +6,7 @@ var bcrypt = require('bcryptjs');
 
 // Sign up
 router.post('/signup', (req, res) => {
-    var email = req.body.email;
+    var email = req.body.user.email;
     var username = req.body.user.username;
     var password = req.body.user.password;
 
@@ -35,7 +35,7 @@ router.post('/signup', (req, res) => {
 // Sign in
 router.post('/login', (req, res) => {
     // Database Query / Lookup
-    User.findOne({ where: { email: req.body.email } }).then(
+    User.findOne({ where: { email: req.body.user.email } }).then(
         function(user) {
             if (user) {
                 bcrypt.compare(req.body.user.password, user.passwordhash, function (err, matches) {
