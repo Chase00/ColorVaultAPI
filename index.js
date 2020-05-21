@@ -3,7 +3,8 @@ require('dotenv').config(); // Imports .env and looks for the .env file to load 
 var express = require('express'); // Import express
 
 var userController = require('./controllers/usercontroller');
-var colorController = require('./controllers/colorcontroller')
+var colorController = require('./controllers/colorcontroller');
+var paletteController = require('./controllers/palettecontroller')
 
 // Db connected
 var sequelize = require('./db');
@@ -25,6 +26,7 @@ app.use(express.static(__dirname + 'public'));
 
 app.use('/api/user', userController);
 app.use('/api/color', colorController);
+app.use('/api/palette', paletteController);
 
 // 'nodemon' to run with hot reload
 app.listen(3000, function() {
