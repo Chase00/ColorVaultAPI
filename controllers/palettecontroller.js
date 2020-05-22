@@ -2,13 +2,17 @@ var express = require('express');
 var router = express.Router();
 const sequelize = require('../db');
 const Palette = sequelize.import('../models/palette');
+const Color = sequelize.import('../models/color');
 const validateSession = require('../middleware/validate-session');
 
 // GET /api/palette/ - get all folders for a user
-router.get('/', validateSession, (req, res) => {
-    Palette.findAll({ where: { owner: req.user.id }})
-        .then(palette => res.status(200).json(palette))
-        .catch(err => res.status(500));
+router.get('/', validateSession, async (req, res) => {
+    try {
+        const palettes = await Palette.findAll({ where: { owner: req.user.id }, include: Color})
+            res.status(200).json(palettes)
+    } catch (err) {
+        res.status(500).send(err);
+    }
 })
 
 // POST /api/palette/ - Create a new blank empty folder
@@ -16,11 +20,10 @@ router.post('/', validateSession, (req, res) => {
     if (!req.errors) {
         const paletteFromRequest = {
             name: "Palette",
-            colors: [],
             owner: req.user.id,
         };
 
-        Palette.create(colorFromRequest)
+        Palette.create(paletteFromRequest)
         .then(newPalette => res.status(200).json(newPalette))
         .catch(err => res.json(err))
     } else {
