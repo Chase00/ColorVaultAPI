@@ -33,18 +33,33 @@ router.post('/', validateSession, (req, res) => {
 
 // GET /api/palette/:id - Get a folder by id from a user
 router.get('/:id', validateSession, (req, res) => {
-    Palette.findOne({ where: { id: req.params.id }})
+    Palette.findOne({ where: { id: req.params.id }, include: Color})
         .then(palette => res.status(200).json(palette))
         .catch(err => res.status(500).json(err));
 });
 
-// PUT /api/palette/:id - Add a color to the folder
+// PUT /api/palette/:id/add - Add a color to the folder
+router.put('/:id/add', validateSession, (req, res) => {
+    if (!req.errors) {
+        Color.update({paletteId: req.params.id}, {where: { id: req.body.id }})
+            .then(color => res.status(200).json(color))
+            .catch(err => res.status(500).json(err));
+    } else {
+        res.status(500).json(req.errors);
+    }
+})
 
 
-
-
-// PUT /api/palette/:id - Remove a color from the folder
-
+// PUT /api/palette/remove - Remove a color from the folder
+router.put('/remove', validateSession, (req, res) => {
+    if (!req.errors) {
+        Color.update({paletteId: null}, {where: { id: req.body.id }})
+            .then(color => res.status(200).json(color))
+            .catch(err => res.status(500).json(err));
+    } else {
+        res.status(500).json(req.errors);
+    }
+})
 
 
 
