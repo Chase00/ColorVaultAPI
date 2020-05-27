@@ -21,6 +21,9 @@ app.use(express.json())
 // Showing express what directory to host
 app.use(express.static(__dirname + 'public'));
 
+// load in headers middleware
+app.use(require('./middleware/headers'));
+
 // Giving express to host at ../
 // app.get('/', (req, res) => res.render('index'));
 
@@ -30,5 +33,5 @@ app.use('/api/palette', paletteController);
 
 // 'nodemon' to run with hot reload
 app.listen(3000, function() {
-    console.log("**** CVAULT SERVER RUNNING ****")
+    console.log("**** CVAULT SERVER RUNNING: 3000 ****")
 })
