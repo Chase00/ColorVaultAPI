@@ -32,6 +32,6 @@ app.use('/api/color', colorController);
 app.use('/api/palette', paletteController);
 
 // 'nodemon' to run with hot reload
-app.listen(3000, function() {
+app.listen(process.env.PORT, function() {
     console.log("**** CVAULT SERVER RUNNING: 3000 ****")
 })
